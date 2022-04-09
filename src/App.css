@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .main{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  display:flex; 
+   justify-content: center;
+  align-items: left; 
+  width:auto;
+  /* height: 100vh; */
   background-color: #212121;
   color: whitesmoke;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 .tableRow
 {
-  color:brown;
+  color:rgb(185, 8, 8);
   background-color:white;
-     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  margin:0%;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ 
 
 }
 .main-header{
@@ -32,4 +33,40 @@
 .readTable
 {
   color:brown
+}
+
+.table2
+{
+  background-color: bisque;
+  color:aqua;
+}
+
+
+.ui blue table
+{
+  color: aqua;
+}
+
+.tableRow1
+{
+  color:blue;
+}
+
+
+
+/* .table3
+{
+  display:flexbox;
+  align-items:unset;
+  justify-content:right;
+} */
+
+.div2
+{
+ color: red;
+}
+
+.button1
+{
+  color:brown;
 }

@@ -40,7 +40,7 @@ export default function Read1(props) {
                         return (
                             <div className="div1">
                             <Table.Row  className="tableRow1">
-                            <button onClick={handleClick}>    {response.name}  </button> </Table.Row>
+                            <button onClick={handleClick}> >> </button> {response.name} </Table.Row>
                             {ShowProductsComponents && <Read2 data={response._links.productComponents.href}/>}
                                 </div>
                             )

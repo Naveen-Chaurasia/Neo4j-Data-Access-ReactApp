@@ -10,16 +10,14 @@ export default function Read() {
   const [ShowProducts, setShowProducts] = useState(false);
 
   var handleClick = () => {
-    console.log("************************");
     if(ShowProducts==false)
     {
     setShowProducts(true);
     }
     else{
         setShowProducts(false);
-
     }
-    console.log("************************");
+
   };
 
   useEffect(() => {
@@ -41,9 +39,7 @@ export default function Read() {
         <Table.Body>
           {APIData.map((response) => {
             return (
-              
               <div>
-              
              <Table.Row className="tableRow" >
                 <Button onClick={handleClick} className="button1"><div2 className="div2">--></div2></Button> {response.name}
               </Table.Row>

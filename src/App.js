@@ -4,6 +4,8 @@ import Read from './components/read';
 import Update from './components/update';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import Dav from './components/dav';
+
 function App() {
   return (
     <Router>
@@ -17,6 +19,7 @@ function App() {
         </div>
 
         <Route path='/update' component={Update} />
+        <Route exact path='/d' component={Dav} />
       </div>
     </Router>
   );

@@ -9,20 +9,61 @@ import axios from 'axios';
 
 export default function Dav() {
    
-
+  const [Da, setDa] = useState([]);
 
 //const [APIData, setAPIData] = useState({})
 
-  const  data=axios.get("http://localhost:8091/category");
+  // const  d=fetch("http://localhost:8091/category");
+  // const db=d.json();
+  // debugger;
 
 
 
-  const genRandomTree = (N = 300) => {
+  useEffect(() => {
+    axios.get(`http://localhost:8091/category`).then((response) => {
+      console.log(response.data._embedded.category);
+      setDa(response.data._embedded.category);
+    });
+  }, []);
+
+
+  // const d=
+  // axios.get(`http://localhost:8091/category`).then((response) => {
+  //   console.log( response.data._embedded.category);
+  //   console.log( response.data._embedded.category.type);
+  //   debugger;
+  //   return response.data._embedded.category;
+    
+  // });
+
+
+
+
+
+  // const genRandomTree = (N = 300) => {
+  //   return {
+  //     nodes: [...Array(N).keys()].map(i => ({
+  //       id: i,
+  //       icon: "https://i.imgur.com/5vyqEdE.png",
+        
+  //     })),
+  //     links: [...Array(N).keys()]
+  //       .filter(id => id)
+  //       .map(id => ({
+  //         source: id,
+  //         target: Math.round(Math.random() * (id - 1)),
+  //         curvature: 0.1,
+  //         color: "#FF0000"
+  //       }))
+  //   };
+  // };
+
+
+
+
+  const genRandomTree = (N = 200) => {
     return {
-      nodes: [...Array(N).keys()].map(i => ({
-        id: i,
-        icon: "https://i.imgur.com/5vyqEdE.png"
-      })),
+      nodes:Da,
       links: [...Array(N).keys()]
         .filter(id => id)
         .map(id => ({
@@ -48,7 +89,8 @@ export default function Dav() {
            bbbbbbbbbbbbbbbbbbbbbbbbbbb
             
             <ForceGraph3D
-          graphData={genRandomTree(40)}
+          graphData={genRandomTree(2000)}
+         // graphData={d}
           nodeLabel="id"
           nodeAutoColorBy="group"
           linkDirectionalParticles="value"

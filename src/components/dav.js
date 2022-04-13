@@ -37,21 +37,42 @@ const headers = {
     axios.post('http://localhost:7474/db/neo4j/tx', body, { headers }).then((response) => {
       console.log(response.data.results[0].data[0].graph.relationships);
       console.log(response.data.results[0].data[0].graph.nodes);
-     //debugger;
+      //debugger;
       setDa(response.data.results[0].data[0].graph);
     });
   }, []);
 
 
-  
+  // const genRandomTree = (N = 300) => {
+  //   return {
+      // nodes: [...Array(N).keys()].map(i => ({
+      //   id: i,
+      //   icon: "https://i.imgur.com/5vyqEdE.png",
+        
+      // })),
+  //     links: [...Array(N).keys()]
+  //       .filter(id => id)
+  //       .map(id => ({
+  //         source: id,
+  //         target: Math.round(Math.random() * (id - 1)),
+  //         curvature: 0.1,
+  //         color: "#FF0000"
+  //       }))
+  //   };
+  // };
 
 
 
 
 
-  const genRandomTree = (N = 100) => {
+  const genRandomTree = (N = 1000) => {
     return {
-      nodes: Da.nodes,
+     // nodes: Da.nodes,
+     nodes: [...Array(N).keys()].map(i => ({
+      id: Da.nodes[0].id,
+      icon: "https://i.imgur.com/5vyqEdE.png",
+      
+    })),
       links: [...Array(N).keys()]
         .filter(id => id)
         .map(id => ({
@@ -86,8 +107,7 @@ const headers = {
            bbbbbbbbbbbbbbbbbbbbbbbbbbb
             
             <ForceGraph3D
-          graphData={genRandomTree}
-         // graphData={d}
+          graphData={genRandomTree(300)}
           nodeLabel="id"
           nodeAutoColorBy="group"
           linkDirectionalParticles="value"

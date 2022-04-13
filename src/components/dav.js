@@ -9,71 +9,68 @@ import axios from 'axios';
 
 export default function Dav() {
    
-  const [Da, setDa] = useState([]);
-
-//const [APIData, setAPIData] = useState({})
-
-  // const  d=fetch("http://localhost:8091/category");
-  // const db=d.json();
-  // debugger;
+  const [Da, setDa] = useState(new Set());
 
 
+  // useEffect(() => {
+  //   axios.get(`http://localhost:8091/category`).then((response) => {
+  //     console.log(response.data._embedded.category);
+  //     setDa(response.data._embedded.category);
+  //   });
+  // }, []);
+
+
+
+const body = { 
+  "statements": [
+    {
+      "statement": "match (n:Category) match (p:Products) MERGE (p)-[x:Product_of]->(c) RETURN n,p,x",
+      "resultDataContents": ["row", "graph"]
+    }
+  ]
+} ;
+const headers = { 
+    'Authorization': 'Basic amFrZTE6amFrZTE=',
+};
 
   useEffect(() => {
-    axios.get(`http://localhost:8091/category`).then((response) => {
-      console.log(response.data._embedded.category);
-      setDa(response.data._embedded.category);
+    axios.post('http://localhost:7474/db/neo4j/tx', body, { headers }).then((response) => {
+      console.log(response.data.results[0].data[0].graph.relationships);
+      console.log(response.data.results[0].data[0].graph.nodes);
+     //debugger;
+      setDa(response.data.results[0].data[0].graph);
     });
   }, []);
 
 
-  // const d=
-  // axios.get(`http://localhost:8091/category`).then((response) => {
-  //   console.log( response.data._embedded.category);
-  //   console.log( response.data._embedded.category.type);
-  //   debugger;
-  //   return response.data._embedded.category;
-    
-  // });
+  
 
 
 
 
 
-  // const genRandomTree = (N = 300) => {
-  //   return {
-  //     nodes: [...Array(N).keys()].map(i => ({
-  //       id: i,
-  //       icon: "https://i.imgur.com/5vyqEdE.png",
-        
-  //     })),
-  //     links: [...Array(N).keys()]
-  //       .filter(id => id)
-  //       .map(id => ({
-  //         source: id,
-  //         target: Math.round(Math.random() * (id - 1)),
-  //         curvature: 0.1,
-  //         color: "#FF0000"
-  //       }))
-  //   };
-  // };
-
-
-
-
-  const genRandomTree = (N = 200) => {
+  const genRandomTree = (N = 100) => {
     return {
-      nodes:Da,
+      nodes: Da.nodes,
       links: [...Array(N).keys()]
         .filter(id => id)
         .map(id => ({
-          source: id,
-          target: Math.round(Math.random() * (id - 1)),
+          source: Da.relationships[id].startNode,
+          target: Da.relationships[id].endNode,
           curvature: 0.1,
           color: "#FF0000"
         }))
     };
   };
+
+
+  // const genRandomTree = () => {
+  //   return {
+  //     nodes:Da.nodes,
+  //     links:Da.relationships
+       
+  //   };
+  // };
 
 
 //   useEffect(() => {
@@ -89,7 +86,7 @@ export default function Dav() {
            bbbbbbbbbbbbbbbbbbbbbbbbbbb
             
             <ForceGraph3D
-          graphData={genRandomTree(2000)}
+          graphData={genRandomTree}
          // graphData={d}
           nodeLabel="id"
           nodeAutoColorBy="group"

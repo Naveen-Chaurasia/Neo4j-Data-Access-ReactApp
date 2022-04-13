@@ -45,6 +45,7 @@ export default function Read() {
               </Table.Row>
               {ShowProducts && <Read1 data={response._links.products.href}/>}
              </div>
+             
             );
           })}
         </Table.Body>

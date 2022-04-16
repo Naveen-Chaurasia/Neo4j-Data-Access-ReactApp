@@ -6,14 +6,17 @@ export default function Dav() {
   const [Nodes1, setNodes1] = useState([]);
   const [Nodes2, setNodes2] = useState([]);
   const [Nodes, setNodes] = useState([]);
-  const [NodeR, setNodeR] = useState([]);
-  const [Node3, setNode3] = useState([]);
+  const [NodeR1, setNodeR1] = useState([]);
+  const [NodeR2, setNodeR2] = useState([]);
+  const [Nodes3, setNodes3] = useState([]);
   const body = {
     statements: [
       {
         statement://"match (p:Products) match(pc:ProductComponents) MERGE (pc)-[y:component_of]->(p) RETURN p,pc,y LIMIT 10",
-       "match (n:Category) match (p:Products) MERGE (p)-[x:Product_of]->(c) RETURN n,p,x",
-        resultDataContents: ["row", "graph"],
+      // "match (n:Category) match (p:Products) MERGE (p)-[x:Product_of]->(c) RETURN n,p,x",
+     // "match (n:Category) match (p:Products) match(pc:ProductComponents) MERGE (p)-[x:Product_of]->(c) MERGE (pc)-[y:component_of]->(p) RETURN n,p,pc,x,y",  
+     "LOAD CSV WITH HEADERS  FROM 'file:///main1.csv' AS line WITH DISTINCT line MERGE (c:Category{name: line.`Category`}) MERGE (p:Products{name:line.`Product name `}) MERGE (p)-[x:Product_of]->(c) CREATE (pc:ProductComponents{name:line.`Component `,Al_content:line.`Aluminium `,Cu_content:line.`Copper `,Steel_content:line.`Steel `,Plastic_content:line.`Plastic `,Li_ion_Battery_Content:line.`Li_ion battery`,PCB_content:line.`PCB `,Flat_Panel_glass:line.`Flat panel glass`,CRT_glass:line.`CRT glass `,other_glass:line.`Other glass`,other_metal_content:line.`Other metals`,other_contents:line.`Others`,total_mass:line.`Total mass (g)`}) MERGE (pc)-[y:component_of]->(p) return p,pc,c,x,y",
+     resultDataContents: ["row", "graph"],
       },
     ],
   };
@@ -25,56 +28,77 @@ export default function Dav() {
     axios
       .post("http://localhost:7474/db/neo4j/tx", body, { headers })
       .then((response) => {
-        console.log(
-          response.data.results[0].data[0].graph.relationships[0].startNode
-        );
-        console.log(
-          typeof parseInt(
-            response.data.results[0].data[0].graph.relationships[0].startNode
-          )
-        );
-        console.log(response.data.results[0].data[0].graph.nodes[0]);
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        // console.log(
+        //   response.data.results[0].data[0].graph.relationships[0].startNode
+        // );
+        // console.log(
+        //   typeof parseInt(
+        //     response.data.results[0].data[0].graph.relationships[0].startNode
+        //   )
+        // );
+        // console.log(response.data.results[0].data[0].graph.nodes[0]);
+        // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
-      setNodes1 ( response.data.results[0].data.slice(0, 5).map((i)=>({nodes:i.graph.nodes[0]})));
-      setNodes2 ( response.data.results[0].data.slice(0, 5).map((i)=>({nodes:i.graph.nodes[1]})));
+      setNodes1 ( response.data.results[0].data.map((i)=>({nodes:i.graph.nodes[0]})));
+      setNodes2 ( response.data.results[0].data.map((i)=>({nodes:i.graph.nodes[1]})));
+      setNodes3 ( response.data.results[0].data.map((i)=>({nodes:i.graph.nodes[2]})));
       setNodes( [...Nodes1, ...Nodes2]);
       
-      setNodeR( response.data.results[0].data.slice(0, 5).map((i)=>({nodesr:i.graph.relationships[0]})));
-      setNode3(NodeR.concat(Nodes1));
-      console.log("**********************");
-      console.log(response.data.results[0].data.slice(0, 5));
-      console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      setNodeR1( response.data.results[0].data.map((i)=>({nodesr:i.graph.relationships[0]})));
+      setNodeR2( response.data.results[0].data.map((i)=>({nodesr:i.graph.relationships[1]})));
+     // setNode3(NodeR1.concat(Nodes2));
+      // console.log("**********************");
+      // console.log(response.data.results[0].data.slice(0, 5));
+      // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       //  setNodes(response.data.results[0].data[0].graph.nodes);
         //setNodeR(response.data.results[0].data[0].graph.relationships);
-     //debugger;
+    // debugger;
       });
   }, []);
 
   const gData = {
     //nodes: Da.map((node, id) => ({ id, node })),
-    nodes: [...Nodes1, ...Nodes2].map((noder) => ({id: noder.nodes.id })),
-    links: NodeR.filter((noder) => noder).map((noder) => ({
+    nodes: [...Nodes1, ...Nodes2,...Nodes3].map((noder) => ({id: noder.nodes.id,name:noder.nodes.properties.name,type:noder.nodes.labels[0] })),
+    links:[...NodeR1, ...NodeR2].filter((noder) => noder).map((noder) => ({
       source: noder.nodesr.startNode,
       target: noder.nodesr.endNode,
     })),
   };
 
- 
+  const GROUPS = 12;
 
   return (
     <div>
-      <ForceGraph3D
+      
+      <ForceGraph2D
+          graphData={gData}
+          nodeLabel="name"
+          nodeAutoColorBy="type"
+          linkWidth={2} 
+          glScale={100}
+        />,
+
+       {/* <ForceGraph3D
+        graphData={gData}
+        nodeLabel="name"
+      nodeAutoColorBy={"type"}
+        nodeAutoColorBy={"type"}
+        linkAutoColorBy={d => gData.nodes[d.source].id%GROUPS}
+        linkWidth={2} 
+      /> */}
+    </div>
+  );
+}
+
+
+
+    {/* <ForceGraph3D
         graphData={gData}
         nodeLabel="id"
         nodeAutoColorBy="group"
         linkDirectionalParticles="value"
         linkDirectionalParticleSpeed={(d) => d.value * 0.001}
-      />
-    </div>
-  );
-}
-
+      /> */}
 
 
  // const gData = {

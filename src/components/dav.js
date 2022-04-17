@@ -2,6 +2,9 @@ import ForceGraph2D from "react-force-graph-2d";
 import ForceGraph3D from "react-force-graph-3d";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import SpriteText from 'three-spritetext';
+import THREE from 'three-spritetext';
+<script src="//unpkg.com/three-spritetext"></script>
 export default function Dav() {
   const [Nodes1, setNodes1] = useState([]);
   const [Nodes2, setNodes2] = useState([]);
@@ -55,7 +58,7 @@ export default function Dav() {
     // debugger;
       });
   }, []);
-
+  const imgs = ['cat.jpg', 'dog.jpg', 'eagle.jpg', 'elephant.jpg', 'grasshopper.jpg', 'octopus.jpg', 'owl.jpg', 'panda.jpg', 'squirrel.jpg', 'tiger.jpg', 'whale.jpg'];
   const gData = {
     //nodes: Da.map((node, id) => ({ id, node })),
     nodes: [...Nodes1, ...Nodes2,...Nodes3].map((noder) => ({id: noder.nodes.id,name:noder.nodes.properties.name,type:noder.nodes.labels[0] })),
@@ -76,6 +79,15 @@ export default function Dav() {
           nodeAutoColorBy="type"
           linkWidth={2} 
           glScale={100}
+
+          nodeThreeObject={({ img }) => {
+            const imgTexture = new THREE.TextureLoader().load(`./imgs/${img}`);
+            const material = new THREE.SpriteMaterial({ map: imgTexture });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(12, 12);
+  
+            return sprite;
+          }}
         />,
 
        {/* <ForceGraph3D

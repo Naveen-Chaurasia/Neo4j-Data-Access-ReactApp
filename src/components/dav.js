@@ -73,21 +73,21 @@ export default function Dav() {
   return (
     <div>
       
-      <ForceGraph2D
+      <ForceGraph3D
           graphData={gData}
           nodeLabel="name"
           nodeAutoColorBy="type"
           linkWidth={2} 
           glScale={100}
 
-          nodeThreeObject={({ img }) => {
-            const imgTexture = new THREE.TextureLoader().load(`./imgs/${img}`);
-            const material = new THREE.SpriteMaterial({ map: imgTexture });
-            const sprite = new THREE.Sprite(material);
-            sprite.scale.set(12, 12);
+          // nodeThreeObject={({ img }) => {
+          //   const imgTexture = new THREE.TextureLoader().load(`./imgs/${img}`);
+          //   const material = new THREE.SpriteMaterial({ map: imgTexture });
+          //   const sprite = new THREE.Sprite(material);
+          //   sprite.scale.set(12, 12);
   
-            return sprite;
-          }}
+          //   return sprite;
+          // }}
         />,
 
        {/* <ForceGraph3D

@@ -5,6 +5,7 @@ import Update from './components/update';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Dav from './components/dav';
+import NodeView from './components/NodeView';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
 
         <Route path='/update' component={Update} />
         <Route exact path='/d' component={Dav} />
+        <Route exact path='/n' component={NodeView} />
       </div>
     </Router>
   );

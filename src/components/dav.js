@@ -61,7 +61,9 @@ export default function Dav() {
   const imgs = ['cat.jpg', 'dog.jpg', 'eagle.jpg', 'elephant.jpg', 'grasshopper.jpg', 'octopus.jpg', 'owl.jpg', 'panda.jpg', 'squirrel.jpg', 'tiger.jpg', 'whale.jpg'];
   const gData = {
     //nodes: Da.map((node, id) => ({ id, node })),
-    nodes: [...Nodes1, ...Nodes2,...Nodes3].map((noder) => ({id: noder.nodes.id,name:noder.nodes.properties.name,type:noder.nodes.labels[0] })),
+        nodes: [...new Set([...Nodes1, ...Nodes2,...Nodes3])].map((noder) => ({id: noder.nodes.id,name:noder.nodes.properties.name,type:noder.nodes.labels[0] })),
+
+    // nodes: [...Nodes1, ...Nodes2,...Nodes3].map((noder) => ({id: noder.nodes.id,name:noder.nodes.properties.name,type:noder.nodes.labels[0] })),
     links:[...NodeR1, ...NodeR2].filter((noder) => noder).map((noder) => ({
       source: noder.nodesr.startNode,
       target: noder.nodesr.endNode,
@@ -79,6 +81,7 @@ export default function Dav() {
           nodeAutoColorBy="type"
           linkWidth={2} 
           glScale={100}
+         // nodeVal="name"
 
           // nodeThreeObject={({ img }) => {
           //   const imgTexture = new THREE.TextureLoader().load(`./imgs/${img}`);
